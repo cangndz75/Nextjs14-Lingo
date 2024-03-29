@@ -1,11 +1,10 @@
 import type { Stripe } from "stripe";
-import { NextResponse } from "next/server";
-import { stripe } from "@/lib/stripe";
-import { headers } from "next/headers";
-import db from "@/db/drizzle";
-import { userSubscription } from "@/db/schema";
 import { eq } from "drizzle-orm";
-
+import { headers } from "next/headers";
+import { NextResponse } from "next/server";
+import db from "@/db/drizzle";
+import { stripe } from "@/lib/stripe";
+import { userSubscription } from "@/db/schema";
 export async function POST(req: Request) {
     const body = await req.text();
     const signature = headers().get("Stripe-Signature") as string;

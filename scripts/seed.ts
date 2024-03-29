@@ -18,6 +18,7 @@ const main = async () => {
         await db.delete(schema.challenges);
         await db.delete(schema.challengeOptions);
         await db.delete(schema.challengeProgress);
+        await db.delete(schema.userSubscription);
 
         await db.insert(schema.courses).values([
             {
@@ -107,7 +108,7 @@ const main = async () => {
                 order: 3,
                 question: 'Which one of these is the "the robot"?',
             },
-            
+
         ]);
 
         await db.insert(schema.challengeOptions).values([
@@ -158,21 +159,21 @@ const main = async () => {
         await db.insert(schema.challengeOptions).values([
             {
                 challengeId: 3,
-                imageSrc:"/man.png",
+                imageSrc: "/man.png",
                 correct: false,
                 text: "el hombre",
                 audioSrc: "/es_man.mp3",
             },
             {
                 challengeId: 3,
-                imageSrc:"/girl.svg",
+                imageSrc: "/girl.svg",
                 correct: false,
                 text: "la mujer",
                 audioSrc: "/es_woman.mp3",
             },
             {
                 challengeId: 3,
-                imageSrc:"/robot.png",
+                imageSrc: "/robot.png",
                 correct: true,
                 text: "el robot",
                 audioSrc: "/es_robot.mp3",
@@ -201,7 +202,7 @@ const main = async () => {
                 order: 3,
                 question: 'Which one of these is the "the robot"?',
             },
-            
+
         ]);
 
         console.log("Veri güncelleme bitti.")
