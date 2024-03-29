@@ -2,7 +2,7 @@ import { cache } from "react";
 import db from "@/db/drizzle";
 import { auth } from "@clerk/nextjs";
 import { eq } from "drizzle-orm";
-import { challengeProgress, courses, units, userProgress, lessons, challenges } from "./schema";
+import { challengeProgress, courses, units, userProgress, lessons, challenges, userSubscription } from "./schema";
 
 export const getUserProgress = cache(async () => {
     const { userId } = await auth();
@@ -48,8 +48,8 @@ export const getUnits = cache(async () => {
 
     const normalizedData = data.map((unit) => {
         const lessonsWithCompletedStatus = unit.lessons.map((lesson) => {
-            if(lesson.challenges.length === 0){
-                return {...lesson, completed:false};
+            if (lesson.challenges.length === 0) {
+                return { ...lesson, completed: false };
             }
             const allCompletedChallenges = lesson.challenges.every((challenge) => {
                 return challenge.challengeProgress
@@ -182,4 +182,25 @@ export const getLessonPercentage = cache(async () => {
         (completedChallenges.length / lesson.challenges.length) * 100);
 
     return percentage;
+})
+const DAY_IN_MS = 86_400_000;
+export const getUserSubscription = cache(async () => {
+    const { userId } = await auth();
+    if (!userId) {
+        return null;
+    }
+
+    const data = await db.query.userSubscription.findFirst({
+        where: eq(userSubscription.userId, userId),
+    });
+
+    if (!data) return null;
+
+    const isActive = data.stripePriceId &&
+        data.stripeCurrentPeriodEnd?.getTime()! + DAY_IN_MS > Date.now();
+
+    return {
+        ...data,
+        isActive: !!isActive,
+    }
 })

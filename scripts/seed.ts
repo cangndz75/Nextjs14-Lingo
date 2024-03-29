@@ -10,7 +10,7 @@ const db = drizzle(sql, { schema });
 
 const main = async () => {
     try {
-        console.log("Tohumlama veritabanı");
+        console.log("Veri güncelleme başladı.");
         await db.delete(schema.courses);
         await db.delete(schema.userProgress);
         await db.delete(schema.units);
@@ -204,7 +204,7 @@ const main = async () => {
             
         ]);
 
-        console.log("Tohumlama bitti.")
+        console.log("Veri güncelleme bitti.")
     } catch (error) {
         console.log(error);
         throw new Error("Bir hata oluştu!");
